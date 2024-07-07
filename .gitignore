@@ -1,0 +1,13 @@
+# C# for Visual Studio Code (powered by OmniSharp)
+Release
+bin
+obj
+
+# Visual Studio Code
+/.vscode
+
+# Dotnet
+.config
+
+# Projetos que não estão prontos para ir ao repositorio
+# Remy.Cliente

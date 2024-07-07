@@ -1,0 +1,23 @@
+[0.0.2]
+Os comandos teve sua implementação, que antes era interface, trocada para classe abstrata.
+Introdução aos subcomandos.
+Troca de nomenclatura: Console passa a ser Mensagem.
+Tocra de nomenclatura: Classe principal Remy passa a ser Motor. ¯\_(ツ)_/¯
+
+
+[0.0.3]
+Sistema de Localizar texto em arquivos extrenos foi movido de MistakeTeam.Azana para Remy.
+ScriptParse 
+    >> E01
+        `Parse` consegue chegar até o `Mercado` mas não consegue entrar nele e pegar o `Arroz`.
+        `Parse` basicamente morre aqui por causa do `TryType` que não sabe identificar um objeto (caracterizado no arquivo pelos colchetes duplos {{}}).
+        Sem repetir codigo, tentar usar um loop de metodos causa um loop infinito já que o compilador não sabe a hora de parar.
+    >> E02
+        Removida a nececidade de um For no `Parse`.
+Alterações e correções de bugs.
+
+[0.0.4]
+Atualizando o sistema de comandos:
+    Subcomandos estão funcionais agora.
+    Foi abandonado a classe generica do ComandoAbstrado para remodelar os subcomandos.
+    Medidas de verificação para autenticar um subcomando evitando assim possiveis erros.
