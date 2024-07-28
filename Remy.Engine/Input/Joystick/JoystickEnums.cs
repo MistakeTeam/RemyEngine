@@ -1,4 +1,4 @@
-namespace Remy.Cliente.Input.Joystick
+namespace Remy.Engine.Input.Joystick
 {
     public enum JoystickButtons
     {

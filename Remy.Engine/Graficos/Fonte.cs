@@ -2,11 +2,11 @@ using OpenTK.Mathematics;
 using OpenTK.Graphics.OpenGL4;
 using SharpFont;
 
-using Remy.Cliente.Graficos.OpenGL;
-using Remy.Cliente.Graficos.Render;
-using Remy.Cliente.Graficos.Texto;
+using Remy.Engine.Graficos.OpenGL;
+using Remy.Engine.Graficos.Render;
+using Remy.Engine.Graficos.Texto;
 
-namespace Remy.Cliente.Graficos
+namespace Remy.Engine.Graficos
 {
     internal class Fonte
     {

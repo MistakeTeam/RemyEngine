@@ -3,12 +3,12 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
-using Remy.Cliente.Graficos;
-using Remy.Cliente.Input;
-using Remy.Cliente.Input.Joystick;
-using Remy.Cliente.UI;
+using Remy.Engine.Graficos;
+using Remy.Engine.Input;
+using Remy.Engine.Input.Joystick;
+using Remy.Engine.UI;
 
-namespace Remy.Cliente
+namespace Remy.Engine
 {
     /// <summary>
     /// Classe principal do Remy/OpenTK

@@ -1,8 +1,8 @@
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL4;
-using Remy.Cliente.Utility;
+using Remy.Engine.Utility;
 
-namespace Remy.Cliente.Graficos.OpenGL
+namespace Remy.Engine.Graficos.OpenGL
 {
     public class ElementBufferObject<T> : IDisposable where T : unmanaged
     {

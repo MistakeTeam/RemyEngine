@@ -2,7 +2,7 @@ using System.Drawing;
 
 using OpenTK.Graphics.OpenGL4;
 
-namespace Remy.Cliente.Graficos.Render
+namespace Remy.Engine.Graficos.Render
 {
     public unsafe class Texture : IDisposable
     {

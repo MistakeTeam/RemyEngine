@@ -1,8 +1,8 @@
 using OpenTK.Graphics.OpenGL4;
-using Remy.Cliente.Utility;
+using Remy.Engine.Utility;
 using System.Runtime.InteropServices;
 
-namespace Remy.Cliente.Graficos.OpenGL
+namespace Remy.Engine.Graficos.OpenGL
 {
     public class VertexBufferObject<T> : IDisposable where T : unmanaged
     {

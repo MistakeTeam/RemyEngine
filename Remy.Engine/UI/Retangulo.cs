@@ -1,12 +1,12 @@
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using Remy.Cliente.Graficos.OpenGL;
-using Remy.Cliente.Graficos.Render;
-using Remy.Cliente.Input;
-using Remy.Cliente.Utility;
+using Remy.Engine.Graficos.OpenGL;
+using Remy.Engine.Graficos.Render;
+using Remy.Engine.Input;
+using Remy.Engine.Utility;
 
-namespace Remy.Cliente.UI
+namespace Remy.Engine.UI
 {
     public class Retangulo
     {

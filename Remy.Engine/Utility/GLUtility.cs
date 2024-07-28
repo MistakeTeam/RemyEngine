@@ -1,7 +1,7 @@
 using OpenTK.Graphics.OpenGL4;
 using System;
 
-namespace Remy.Cliente.Utility
+namespace Remy.Engine.Utility
 {
     internal static class GLUtility
     {

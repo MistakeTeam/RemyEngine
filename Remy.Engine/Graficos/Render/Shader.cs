@@ -2,7 +2,7 @@ using System.Numerics;
 
 using OpenTK.Graphics.OpenGL4;
 
-namespace Remy.Cliente.Graficos.Render
+namespace Remy.Engine.Graficos.Render
 {
     public class Shader
     {

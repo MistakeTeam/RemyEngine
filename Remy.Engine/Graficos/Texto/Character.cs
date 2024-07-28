@@ -1,6 +1,6 @@
 using OpenTK.Mathematics;
 
-namespace Remy.Cliente.Graficos.Texto
+namespace Remy.Engine.Graficos.Texto
 {
     public sealed class Character
     {

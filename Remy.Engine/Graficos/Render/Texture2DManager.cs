@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Remy.Cliente.Graficos.Render
+namespace Remy.Engine.Graficos.Render
 {
     internal class Texture2DManager
     {

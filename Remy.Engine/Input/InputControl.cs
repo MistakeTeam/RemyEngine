@@ -3,9 +3,9 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-using Remy.Cliente.Utility;
+using Remy.Engine.Utility;
 
-namespace Remy.Cliente.Input
+namespace Remy.Engine.Input
 {
     public class InputControl
     {
