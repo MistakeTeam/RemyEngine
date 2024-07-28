@@ -1,4 +1,4 @@
-# `Remy: Um motor basico para jogos em texto`
+# Remy
 
-### Notas de Versão
+✨ Remy é um motor grafico baseado em OpenTK e C#.
 

@@ -1,18 +1,23 @@
-using OpenTK.Graphics.OpenGL4;
-using Remy.Cliente.Utility;
-using System;
 using System.Drawing;
+
+using OpenTK.Graphics.OpenGL4;
 
 namespace Remy.Cliente.Graficos.Render
 {
     public unsafe class Texture : IDisposable
     {
-        private readonly int _handle;
+        public readonly int _handle;
 
-        public readonly int Width;
-        public readonly int Height;
+        public virtual int Width { get; set; }
+        public virtual int Height { get; set; }
+        public virtual int GetByteSize() => Width * Height * 4;
 
-        public Texture(int width, int height)
+        public Texture(int width, int height) : this(width, height, PixelInternalFormat.Rgba8, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero)
+        {
+
+        }
+
+        public Texture(int width, int height, PixelInternalFormat internalformat, PixelFormat format, PixelType type, nint pixels)
         {
             Width = width;
             Height = height;
@@ -22,7 +27,7 @@ namespace Remy.Cliente.Graficos.Render
             Bind();
 
             //Reserve enough memory from the gpu for the whole image
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, internalformat, width, height, 0, format, type, pixels);
 
             SetParameters();
         }
@@ -46,7 +51,25 @@ namespace Remy.Cliente.Graficos.Render
             GL.BindTexture(TextureTarget.Texture2D, _handle);
         }
 
+        private bool isDisposed;
+
         public void Dispose()
+        {
+            if (isDisposed)
+                return;
+
+            isDisposed = true;
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~Texture()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose(bool isDisposing)
         {
             //In order to dispose we need to delete the opengl handle for the texure.
             GL.DeleteTexture(_handle);
