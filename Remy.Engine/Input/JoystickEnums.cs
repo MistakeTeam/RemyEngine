@@ -1,6 +1,6 @@
-namespace Remy.Engine.Input.Joystick
+namespace Remy.Engine.Input
 {
-    public enum JoystickButtons
+    public enum JoystickButtons : int
     {
         A = 0,
         B = 1,
@@ -19,7 +19,7 @@ namespace Remy.Engine.Input.Joystick
         Left = 14
     }
 
-    public enum JoystickAxis
+    public enum JoystickAxis : int
     {
         LHorizontal = 0,
         LVertical = 1,

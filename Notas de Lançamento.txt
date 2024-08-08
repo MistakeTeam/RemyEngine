@@ -1,0 +1,17 @@
+
+
+Input
+
+    Adicinado suporte para joystick
+        No momento só temos `Enums` listando controles de Xbox 360
+
+    Binding para mouse e teclado
+
+
+Fonte
+
+    Reescrever toda implementação de renderiazar texto
+
+
+
+

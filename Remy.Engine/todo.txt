@@ -1,0 +1,21 @@
+Input OK
+Textura
+Shadres
+UI
+Cenas
+Componentes
+Logs
+
+
+
+EXE >> Cena >> Objetos >> Comportamento >> Componente >> Objeto??
+
+
+
+
+Refatorar a Fonte
+
+Sprite >> Fonte >> Texto
+
+
+

@@ -1,36 +1,74 @@
+using System.Reflection;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-
-using Remy.Engine.Graficos;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using Remy.Engine.Core;
+using Remy.Engine.Graficos.Interface;
+using Remy.Engine.Graficos.Texto;
+using Remy.Engine.Graficos.OpenGL;
 using Remy.Engine.Input;
-using Remy.Engine.Input.Joystick;
-using Remy.Engine.UI;
+using Remy.Engine.IO;
+using Remy.Engine.Logs;
 
 namespace Remy.Engine
 {
     /// <summary>
-    /// Classe principal do Remy/OpenTK
+    /// Classe principal do Remy
     /// </summary>
-    /// <param name="nws"></param>
     public class Game(NativeWindowSettings nws) : GameWindow(GameWindowSettings.Default, nws)
     {
-        // Propriedades basicas da janela
-        public static Vector2i Janela { get; private set; }
-        public static string Titulo { get; private set; }
+        // Propriedades da engine
+        internal static Vector2i Janela;
+        internal static string Titulo;
+        internal static IReadOnlyList<JoystickState> Joysticks;
 
-
-
-        private Fonte Fonte;
-
+        private LogFile LogFile;
+        private GerenciarFontes Fontes;
         private InputControl InputControl;
 
-
         private Retangulo Retangulo1;
-        private Retangulo Retangulo2;
-        private Retangulo Retangulo3;
-        private Retangulo Retangulo4;
+
+
+
+
+
+        private readonly float[] _vertices =
+       {
+            // Position   Texture coordinates
+             0.5f,  0.5f, 1.0f, 1.0f, // top right
+             0.5f, -0.5f, 1.0f, 0.0f, // bottom right
+            -0.5f, -0.5f, 0.0f, 0.0f, // bottom left
+            -0.5f,  0.5f, 0.0f, 1.0f  // top left
+        };
+
+        private readonly uint[] _indices =
+        {
+            0, 1, 3,
+            1, 2, 3
+        };
+
+        private BufferObject<uint> _elementBufferObject;
+
+        private BufferObject<float> _vertexBufferObject;
+
+        private ArrayObject _vertexArrayObject;
+
+        private Shader _shader;
+
+        private Texture _texture;
+
+
+
+        ConstrutorTexto sampleText;
+
+
+
+        public void AddCena(Cena _cena)
+        {
+            GCena.AddCena(_cena);
+        }
 
 
         // Evento é garregado quando o OpenTK inicia o aplicativo
@@ -43,21 +81,62 @@ namespace Remy.Engine
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            Fonte = new Fonte();
-            InputControl = new InputControl(this);
+            LogFile = new LogFile();
+
+            if (GCena.Cenas.Count <= 0)
+            {
+                LogFile.WriteLine("Nenuma cena disponivel para ser carregada!");
+                Close();
+                return;
+            }
+
+            foreach (
+                Type component in Assembly.GetEntryAssembly()!.GetTypes().Where(t =>
+                {
+                    return t != null && t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(Comportamento));
+                })
+            )
+            {
+                Comportamento cc = (Comportamento)Activator.CreateInstance(component)!;
+            }
 
             Janela = new(Size.X, Size.Y - (Bounds.Size.Y - ClientRectangle.Size.Y));
             Titulo = Title;
 
-            Console.WriteLine(Environment.CurrentDirectory);
+            LogFile.WriteLine(Environment.CurrentDirectory);
 
-            Matrix4 projectionM = Matrix4.CreateOrthographicOffCenter(0.0f, this.ClientSize.X, this.ClientSize.Y, 0.0f, -1.0f, 1.0f);
-            GL.UniformMatrix4(1, false, ref projectionM);
+            Fontes = new GerenciarFontes();
+            InputControl = new InputControl(this);
 
-            Retangulo1 = new Retangulo(120, 50, 800, 600, "Retangulo1");
-            Retangulo2 = new Retangulo(120, 50, 0, 600, "Retangulo2");
-            Retangulo3 = new Retangulo(120, 50, 800, 0, "Retangulo3");
-            Retangulo4 = new Retangulo(120, 50, 0, 0, "Retangulo4");
+            sampleText = new ConstrutorTexto("This is sample text", 0.0f, 0.0f, 1.0f, Color4.Crimson);
+
+            Retangulo1 = new Retangulo(300, 250, 50, 80, "Retangulo1");
+
+
+
+
+            _vertexArrayObject = new(4 * sizeof(float));
+
+            _vertexBufferObject = new(_vertices.Length, BufferTarget.ArrayBuffer, BufferUsageHint.StaticDraw);
+            _vertexBufferObject.SetData(_vertices);
+
+            _elementBufferObject = new(_indices.Length, BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw);
+            _elementBufferObject.SetData(_indices);
+
+            _shader = new("Recursos/Shaders/Texture.vert", "Recursos/Shaders/Texture.frag");
+            _shader.Use();
+
+            _vertexArrayObject.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 0);
+            _vertexArrayObject.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float));
+
+            _texture = new("Recursos/Textura/container.jpg");
+            _texture.Bind();
+
+
+
+
+
+            BaseComportamento.Start();
         }
 
         // Em seguida vem o update
@@ -67,7 +146,10 @@ namespace Remy.Engine
 
             Title = $"{Titulo}: Resolução: {Janela.X}x{Janela.Y} {API}: {APIVersion}/{Profile} (Vsync: {VSync}) FPS: {1f / e.Time:0}";
 
+            Joysticks = JoystickStates;
             InputControl.Update();
+
+            BaseComportamento.Update();
         }
 
         // logo após, vem o render
@@ -77,49 +159,56 @@ namespace Remy.Engine
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            Fonte.RenderText("This is sample text", 0.0f, 0.0f, 1.0f, Color4.Crimson);
+            sampleText.Desenhar();
+            // Fonte.RenderText("(C) LearnOpenGL.com", 540.0f, 900.0f, 0.5f, Color4.HotPink);
 
-            Fonte.RenderText("(C) LearnOpenGL.com", 540.0f, 900.0f, 0.5f, Color4.HotPink);
+            // Fonte.RenderText($"X: {Mouse.MousePosition.X} / {Mouse.X}", 490.0f, 440.0f, 0.5f, Color4.HotPink);
+            // Fonte.RenderText($"Y: {Mouse.MousePosition.Y} / {Mouse.Y}", 490.0f, 470.0f, 0.5f, Color4.HotPink);
 
+            // if (Joystick.JoystickIsConnected)
+            // {
+            //     Fonte.RenderText($"RT {Joystick.GetJoystick(0).GetAxis(JoystickAxis.RT)}", 490.0f, 120.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"RB {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.RB)}", 490.0f, 150.0f, 0.5f, Color4.Black);
 
-            Fonte.RenderText($"{InputControl.MousePosition.X}", 490.0f, 440.0f, 0.5f, Color4.HotPink);
-            Fonte.RenderText($"{InputControl.MousePosition.Y}", 490.0f, 470.0f, 0.5f, Color4.HotPink);
+            //     Fonte.RenderText($"RButton {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.RButton)}", 490.0f, 180.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"R Vertical {Joystick.GetJoystick(0).GetAxis(JoystickAxis.RVertical)}", 490.0f, 210.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"R Horizontal {Joystick.GetJoystick(0).GetAxis(JoystickAxis.RHorizontal)}", 490.0f, 240.0f, 0.5f, Color4.Black);
 
-            if (InputControl.JoystickIsConnected)
-            {
-                Fonte.RenderText($"RT {InputControl.Joysticks[0].GetAxis((int)JoystickAxis.RT)}", 490.0f, 120.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"RB {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.RB)}", 490.0f, 150.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"LT {Joystick.GetJoystick(0).GetAxis(JoystickAxis.LT)}", 70.0f, 120.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"LB {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.LB)}", 70.0f, 150.0f, 0.5f, Color4.Black);
 
-                Fonte.RenderText($"RButton {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.RButton)}", 490.0f, 180.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"R Vertical {InputControl.Joysticks[0].GetAxis((int)JoystickAxis.RVertical)}", 490.0f, 210.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"R Horizontal {InputControl.Joysticks[0].GetAxis((int)JoystickAxis.RHorizontal)}", 490.0f, 240.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"LButton {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.LButton)}", 70.0f, 180.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"L Vertical {Joystick.GetJoystick(0).GetAxis(JoystickAxis.LVertical)}", 70.0f, 210.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"L Horizontal {Joystick.GetJoystick(0).GetAxis(JoystickAxis.LHorizontal)}", 70.0f, 240.0f, 0.5f, Color4.Black);
 
-                Fonte.RenderText($"LT {InputControl.Joysticks[0].GetAxis((int)JoystickAxis.LT)}", 70.0f, 120.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"LB {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.LB)}", 70.0f, 150.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"A {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.A)}", 490.0f, 300.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"B {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.B)}", 490.0f, 330.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"X {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.X)}", 490.0f, 360.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"Y {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.Y)}", 490.0f, 390.0f, 0.5f, Color4.Black);
 
-                Fonte.RenderText($"LButton {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.LButton)}", 70.0f, 180.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"L Vertical {InputControl.Joysticks[0].GetAxis((int)JoystickAxis.LVertical)}", 70.0f, 210.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"L Horizontal {InputControl.Joysticks[0].GetAxis((int)JoystickAxis.LHorizontal)}", 70.0f, 240.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"Back {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.Back)}", 100.0f, 520.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"Mode {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.Mode)}", 230.0f, 520.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"Start {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.Start)}", 370.0f, 520.0f, 0.5f, Color4.Black);
 
-                Fonte.RenderText($"A {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.A)}", 490.0f, 300.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"B {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.B)}", 490.0f, 330.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"X {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.X)}", 490.0f, 360.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"Y {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.Y)}", 490.0f, 390.0f, 0.5f, Color4.Black);
-
-                Fonte.RenderText($"Back {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.Back)}", 100.0f, 520.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"Mode {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.Mode)}", 230.0f, 520.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"Start {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.Start)}", 370.0f, 520.0f, 0.5f, Color4.Black);
-
-                Fonte.RenderText($"Cima {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.Up)}", 140.0f, 350.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"Baixo {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.Down)}", 140.0f, 410.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"Esqueda {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.Left)}", 50.0f, 380.0f, 0.5f, Color4.Black);
-                Fonte.RenderText($"Direita {InputControl.Joysticks[0].IsButtonDown((int)JoystickButtons.Right)}", 220.0f, 380.0f, 0.5f, Color4.Black);
-            }
+            //     Fonte.RenderText($"Cima {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.Up)}", 140.0f, 350.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"Baixo {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.Down)}", 140.0f, 410.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"Esqueda {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.Left)}", 50.0f, 380.0f, 0.5f, Color4.Black);
+            //     Fonte.RenderText($"Direita {Joystick.GetJoystick(0).IsButtonDown(JoystickButtons.Right)}", 220.0f, 380.0f, 0.5f, Color4.Black);
+            // }
 
             Retangulo1.desenhar();
-            Retangulo2.desenhar();
-            Retangulo3.desenhar();
-            Retangulo4.desenhar();
+
+
+
+            _vertexArrayObject.Bind();
+
+            _texture.Bind(TextureUnit.Texture0);
+            _shader.Use();
+
+            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+
+
+
 
             SwapBuffers();
         }
@@ -133,9 +222,9 @@ namespace Remy.Engine
         {
             base.OnResize(e);
 
-            GL.Viewport(0, 0, Size.X, Size.Y);
-
             Janela = new(Size.X, Size.Y - (Bounds.Size.Y - ClientRectangle.Size.Y));
+
+            GL.Viewport(0, 0, Size.X, Size.Y);
         }
 
         // Evento é carregado quando o OpenTK encerra o aplicativo

@@ -1,10 +1,11 @@
 using System.Numerics;
 
 using OpenTK.Graphics.OpenGL4;
+using Remy.Engine.Logs;
 
-namespace Remy.Engine.Graficos.Render
+namespace Remy.Engine.Graficos.OpenGL
 {
-    public class Shader
+    public class Shader : IDisposable
     {
         public readonly int Handle;
 
@@ -45,7 +46,7 @@ namespace Remy.Engine.Graficos.Render
             string infoLog = GL.GetShaderInfoLog(shader);
             if (!string.IsNullOrWhiteSpace(infoLog))
             {
-                throw new Exception($"Error compiling shader of type {type}, failed with error {infoLog}");
+                throw new Exception($"Erro ao tentar compilar shader do tipo: {type}, falhou com o erro: {infoLog}");
             }
 
             return shader;
@@ -75,8 +76,7 @@ namespace Remy.Engine.Graficos.Render
 
         public int GetAttribLocation(string attribName)
         {
-            var result = GL.GetAttribLocation(Handle, attribName);
-            return result;
+            return GL.GetAttribLocation(Handle, attribName);
         }
 
         public void SetUniform(string name, int value)
@@ -84,7 +84,7 @@ namespace Remy.Engine.Graficos.Render
             int location = GL.GetUniformLocation(Handle, name);
             if (location == -1)
             {
-                throw new Exception($"{name} uniform not found on shader.");
+                throw new Exception($"{name} uniform não foi encontrado no shader.");
             }
             GL.Uniform1(location, value);
         }
@@ -94,7 +94,7 @@ namespace Remy.Engine.Graficos.Render
             int location = GL.GetUniformLocation(Handle, name);
             if (location == -1)
             {
-                throw new Exception($"{name} uniform not found on shader.");
+                throw new Exception($"{name} uniform não foi encontrado no shader.");
             }
             GL.Uniform1(location, value);
         }
@@ -104,12 +104,11 @@ namespace Remy.Engine.Graficos.Render
             int location = GL.GetUniformLocation(Handle, name);
             if (location == -1)
             {
-                throw new Exception($"{name} uniform not found on shader.");
+                throw new Exception($"{name} uniform não foi encontrado no shader.");
             }
 
             GL.UniformMatrix4(location, 1, false, (float*)&value);
         }
-
 
         /// DISPOSED
 
@@ -120,16 +119,17 @@ namespace Remy.Engine.Graficos.Render
             if (!disposedValue)
             {
                 GL.DeleteProgram(Handle);
-
                 disposedValue = true;
             }
         }
 
         ~Shader()
         {
+            Dispose();
+
             if (disposedValue == false)
             {
-                Console.WriteLine("GPU Resource leak! Did you forget to call Dispose()?");
+                LogFile.WriteLine("Vazamento de recurso da GPU! Você esqueceu de chamar Dispose()?");
             }
         }
 
