@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- <DebugSymbols>false</DebugSymbols> -->
+    <!-- <DebugType>none</DebugType> -->
     <Nullable>enable</Nullable>
     <NoWarn>CS0227;CS8618</NoWarn>
   </PropertyGroup>

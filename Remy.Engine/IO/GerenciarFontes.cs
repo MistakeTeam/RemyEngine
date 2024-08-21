@@ -11,7 +11,6 @@ namespace Remy.Engine.IO
     {
         private readonly Library _library;
         private static Dictionary<string, Fonte> Fontes = [];
-        private string Nome;
         private static string FontePadrão;
 
         public GerenciarFontes()
@@ -19,21 +18,21 @@ namespace Remy.Engine.IO
             _library = new Library();
 
             CarregarFonte("Recursos/Fonts/DroidSans.ttf");
-            CarregarFonte("Recursos/Fonts/DroidSansJapanese.ttf"); // COMO PODE ISSO TER 12585 GLYPHS????? *_*
+            // CarregarFonte("Recursos/Fonts/DroidSansJapanese.ttf"); // COMO PODE ISSO TER 12585 GLYPHS????? *_*
 
             FontePadrão = "Droid Sans";
         }
 
-        public void CarregarFonte(string path)
+        public void CarregarFonte(string path, uint tamanho = 20)
         {
-            Dictionary<uint, Character> _characters = [];
+            Dictionary<uint, Caractere> caracteres = [];
             Face face = new(_library, path);
-            face.SetPixelSizes(0, 48); // Muda o tamanho da fonte
-
+            face.SetPixelSizes(0, tamanho); // Muda o tamanho da fonte
+            Console.WriteLine(face.AvailableSizes);
             // definir alinhamento de pixel em 1 byte 
             GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
 
-            LogFile.WriteLine($"[Fonte] Criando {face.GlyphCount} glyphs");
+            LogFile.WriteLine($"Criando {face.GlyphCount} glyphs");
             for (uint c = 0; c < face.GlyphCount; c++)
             {
                 try
@@ -46,7 +45,7 @@ namespace Remy.Engine.IO
                     Texture FontTexture = new Texture(bitmap.Width, bitmap.Rows, PixelInternalFormat.R8, PixelFormat.Red, PixelType.UnsignedByte, bitmap.Buffer);
 
                     // Adicione a letra
-                    Character ch = new Character
+                    Caractere ch = new Caractere
                     (
                         FontTexture._handle,
                         new Vector2(bitmap.Width, bitmap.Rows),
@@ -54,7 +53,7 @@ namespace Remy.Engine.IO
                         glyph.Advance.X.Value
                     );
 
-                    _characters.Add(c, ch);
+                    caracteres.Add(c, ch);
                 }
                 catch (Exception ex)
                 {
@@ -65,8 +64,8 @@ namespace Remy.Engine.IO
             GL.BindTexture(TextureTarget.Texture2D, 0);    // vincular textura padrão
             GL.PixelStore(PixelStoreParameter.UnpackAlignment, 4);  // definir o alinhamento de pixels padrão (4 bytes) 
 
-            LogFile.WriteLine($"[Fonte] Salvando {face.FamilyName}");
-            Fontes.Add(face.FamilyName, new(face.FamilyName, _characters));
+            LogFile.WriteLine($"Salvando {face.FamilyName}");
+            Fontes.Add(face.FamilyName, new(face.FamilyName, caracteres));
         }
 
         public static Fonte GetFonte(string nome = "")

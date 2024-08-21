@@ -94,30 +94,9 @@ namespace Remy.Engine.Graficos.OpenGL
 
         /// DISPOSED
 
-        private bool disposedValue = false;
-
-        private void Dispose(bool isDisposing)
-        {
-            if (!disposedValue)
-            {
-                GL.DeleteTexture(_handle);
-                disposedValue = true;
-            }
-        }
-
-        ~Texture()
-        {
-            Dispose();
-
-            if (disposedValue == false)
-            {
-                LogFile.WriteLine("Vazamento de recurso de GPU! Você esqueceu de chamar Dispose()?");
-            }
-        }
-
         public void Dispose()
         {
-            Dispose(true);
+            GL.DeleteTexture(_handle);
             GC.SuppressFinalize(this);
         }
     }

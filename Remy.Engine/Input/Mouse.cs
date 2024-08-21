@@ -6,9 +6,17 @@ namespace Remy.Engine.Input
     public class Mouse
     {
         private static MouseState _mouseState;
-        public static float X;
-        public static float Y;
-        public static Vector2 MousePosition;
+
+        public bool PosiçãoValida { get; set; } = true;
+
+        public static Vector2 Posição { get; private set; }
+        public static Vector2 Delta { get; private set; }
+        public static Vector2 UltimaPosição { get; private set; }
+
+        public static Vector2 Scroll { get; private set; }
+        public static Vector2 ScrollDelta { get; private set; }
+        public static Vector2 UltimoScroll { get; private set; }
+
         public static event Action MouseEvent;
 
         public Mouse(MouseState _mouse)
@@ -23,10 +31,18 @@ namespace Remy.Engine.Input
 
         public void Update()
         {
-            X = _mouseState.X;
-            Y = _mouseState.Y;
-            MousePosition = new(Mouse.X / (Game.Janela.X / 2) - 1.0f, -1 * (Mouse.Y / (Game.Janela.Y / 2) - 1.0f));
-            //MousePosition = new(Converter.Intervalo(Mouse.X, 0, Game.Janela.X, -1, 1), Converter.Intervalo(Mouse.Y, 0, Game.Janela.Y, -1, 1));
+            if (_mouseState.Position.X >= Game.Janela.X || _mouseState.Position.X <= 0)
+                return;
+            if (_mouseState.Position.Y >= Game.Janela.Y || _mouseState.Position.Y <= 0)
+                return;
+
+            Posição = _mouseState.Position;
+            Delta = _mouseState.Delta;
+            UltimaPosição = _mouseState.PreviousPosition;
+
+            Scroll = _mouseState.Scroll;
+            ScrollDelta = _mouseState.ScrollDelta;
+            UltimoScroll = _mouseState.PreviousScroll;
 
             MouseEvent?.Invoke();
         }

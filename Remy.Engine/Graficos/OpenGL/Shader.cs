@@ -112,31 +112,9 @@ namespace Remy.Engine.Graficos.OpenGL
 
         /// DISPOSED
 
-        private bool disposedValue = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                GL.DeleteProgram(Handle);
-                disposedValue = true;
-            }
-        }
-
-        ~Shader()
-        {
-            Dispose();
-
-            if (disposedValue == false)
-            {
-                LogFile.WriteLine("Vazamento de recurso da GPU! Você esqueceu de chamar Dispose()?");
-            }
-        }
-
-
         public void Dispose()
         {
-            Dispose(true);
+            GL.DeleteProgram(Handle);
             GC.SuppressFinalize(this);
         }
     }

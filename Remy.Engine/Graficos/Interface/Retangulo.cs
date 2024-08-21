@@ -1,5 +1,6 @@
 using OpenTK.Graphics.OpenGL4;
 using Remy.Engine.Graficos.OpenGL;
+using Remy.Engine.Input;
 using Remy.Engine.Logs;
 using Remy.Engine.Utility;
 
@@ -58,6 +59,16 @@ namespace Remy.Engine.Graficos.Interface
 
             VAO.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 0);
             VAO.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 2 * sizeof(float));
+
+            void MouseE()
+            {
+                if (Mouse.Posição.X > nX && Mouse.Posição.Y > nY)
+                {
+                    // Console.WriteLine("TESTE011001");
+                }
+            }
+
+            Mouse.MouseEvent += MouseE;
         }
 
         public void desenhar()
@@ -70,33 +81,11 @@ namespace Remy.Engine.Graficos.Interface
 
         /// DISPOSED
 
-        private bool disposedValue = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                VBO.Dispose();
-                VAO.Dispose();
-                EBO.Dispose();
-                disposedValue = true;
-            }
-        }
-
-        ~Retangulo()
-        {
-            Dispose();
-
-            if (disposedValue == false)
-            {
-                LogFile.WriteLine("Vazamento de recurso de GPU! Você esqueceu de chamar Dispose()?");
-            }
-        }
-
-
         public void Dispose()
         {
-            Dispose(true);
+            VBO.Dispose();
+            VAO.Dispose();
+            EBO.Dispose();
             GC.SuppressFinalize(this);
         }
     }
