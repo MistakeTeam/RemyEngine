@@ -12,12 +12,12 @@ namespace Remy.Engine.Graficos.Texto
         private Fonte FonteEmUso;
         private Shader _shader;
 
-        public TextoRender()
+        public TextoRender(Dictionary<int, (char, float[])> ListaVertices)
         {
             Color4 Cor = Color4.Crimson;
             FonteEmUso = GerenciarFontes.GetFonte();
 
-            // Criar [Vertex Buffer Object](https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Buffer_Object)
+            // [Vertex Buffer Object](https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Buffer_Object)
             VBO = new BufferObject<float>(4 * 6, BufferTarget.ArrayBuffer, BufferUsageHint.DynamicDraw);
 
             // [Vertex Array Object](https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object)
@@ -37,23 +37,21 @@ namespace Remy.Engine.Graficos.Texto
             GL.ActiveTexture(TextureUnit.Texture0);
 
             VAO.Bind();
-        }
 
-        public void SetVertices(Dictionary<int, (char, float[,])> ListaVertices)
-        {
             foreach (var cache in ListaVertices)
             {
-                Caractere ch = FonteEmUso.Caracteres[cache.Value.Item1];
+                CaractereGlyph ch = FonteEmUso.Caracteres[cache.Value.Item1];
 
-                GL.BindTexture(TextureTarget.Texture2D, ch.TextureID); // Renderizar textura de glifo sobre quad
+                GL.BindTexture(TextureTarget.Texture2D, ch.Textura.Handle); // Renderizar textura de glifo sobre quad
                 VBO.SetData(cache.Value.Item2); // Atualizar o conteúdo da memória VBO
                 GL.DrawArrays(PrimitiveType.Triangles, 0, 6); // Renderizar quad
             }
 
             VBO.Bind();
             GL.BindTexture(TextureTarget.Texture2D, 0);
-        }
 
+            Dispose();
+        }
 
         /// DISPOSED
 

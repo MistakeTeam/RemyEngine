@@ -10,9 +10,9 @@ namespace Remy.Engine.Graficos.Texto
         public bool Italico { get; }
         public bool LarguraFixa { get; }
         public string FonteNome { get; }
-        public Dictionary<uint, Caractere> Caracteres { get; }
+        public Dictionary<uint, CaractereGlyph> Caracteres { get; }
 
-        public Fonte(string nome, Dictionary<uint, Caractere> caracteres)
+        public Fonte(string nome, Dictionary<uint, CaractereGlyph> caracteres)
         {
             Nome = nome;
             Caracteres = caracteres;

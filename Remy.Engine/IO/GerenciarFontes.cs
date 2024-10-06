@@ -25,7 +25,8 @@ namespace Remy.Engine.IO
 
         public void CarregarFonte(string path, uint tamanho = 20)
         {
-            Dictionary<uint, Caractere> caracteres = [];
+            LogFile.WriteLine($"Carregando fonte: {path}");
+            Dictionary<uint, CaractereGlyph> caracteres = [];
             Face face = new(_library, path);
             face.SetPixelSizes(0, tamanho); // Muda o tamanho da fonte
             Console.WriteLine(face.AvailableSizes);
@@ -42,15 +43,16 @@ namespace Remy.Engine.IO
                     GlyphSlot glyph = face.Glyph;
                     FTBitmap bitmap = glyph.Bitmap;
 
-                    Texture FontTexture = new Texture(bitmap.Width, bitmap.Rows, PixelInternalFormat.R8, PixelFormat.Red, PixelType.UnsignedByte, bitmap.Buffer);
+                    Textura FontTexture = new Textura2D(bitmap.Width, bitmap.Rows, bitmap.Buffer);
 
                     // Adicione a letra
-                    Caractere ch = new Caractere
+                    CaractereGlyph ch = new CaractereGlyph
                     (
-                        FontTexture._handle,
+                        FontTexture,
                         new Vector2(bitmap.Width, bitmap.Rows),
                         new Vector2(glyph.BitmapLeft, glyph.BitmapTop),
-                        glyph.Advance.X.Value
+                        glyph.Advance.X.Value,
+                        (char)c
                     );
 
                     caracteres.Add(c, ch);
@@ -68,9 +70,9 @@ namespace Remy.Engine.IO
             Fontes.Add(face.FamilyName, new(face.FamilyName, caracteres));
         }
 
-        public static Fonte GetFonte(string nome = "")
+        public static Fonte GetFonte(string? nome = null)
         {
-            if (nome == "") nome = FontePadrão;
+            nome ??= FontePadrão;
             return Fontes[nome];
         }
     }
