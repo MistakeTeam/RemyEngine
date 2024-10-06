@@ -25,7 +25,7 @@ public class Program
     {
         using (Game game = new(NWS))
         {
-            game.AddCena(new Cena());
+            game.AddCena(new Cena("Menu"));
 
             game.Unload += delegate
             {
