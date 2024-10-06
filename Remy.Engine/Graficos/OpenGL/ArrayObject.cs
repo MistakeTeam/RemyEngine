@@ -8,6 +8,7 @@ namespace Remy.Engine.Graficos.OpenGL
         private readonly int _handle;
         private readonly int _stride;
 
+        // [Vertex Array Object](https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object)
         public ArrayObject(int stride)
         {
             if (stride <= 0)

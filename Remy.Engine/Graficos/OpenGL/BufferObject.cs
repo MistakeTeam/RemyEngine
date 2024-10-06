@@ -9,6 +9,7 @@ namespace Remy.Engine.Graficos.OpenGL
         public readonly int Size;
         private readonly BufferTarget _bufferType;
 
+        // [Vertex Buffer Object](https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Buffer_Object)
         public BufferObject(int size, BufferTarget bufferType, BufferUsageHint Dynamic)
         {
             _bufferType = bufferType;
