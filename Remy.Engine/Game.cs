@@ -12,8 +12,6 @@ using Remy.Engine.Input;
 using Remy.Engine.IO;
 using Remy.Engine.Logs;
 using Remy.Engine.Graficos;
-using System.ComponentModel;
-using System.Diagnostics;
 
 namespace Remy.Engine
 {
@@ -37,34 +35,31 @@ namespace Remy.Engine
         // ===============================================================================================================
 
         private readonly float[] _vertices =
-       {
+       [
             // Position   Texture coordinates
              0.5f,  0.5f, 1.0f, 1.0f, // top right
              0.5f, -0.5f, 1.0f, 0.0f, // bottom right
             -0.5f, -0.5f, 0.0f, 0.0f, // bottom left
             -0.5f,  0.5f, 0.0f, 1.0f  // top left
-        };
+        ];
 
         private readonly uint[] _indices =
-        {
+        [
             0, 1, 3,
             1, 2, 3
-        };
+        ];
 
         private BufferObject<uint> _elementBufferObject;
-
         private BufferObject<float> _vertexBufferObject;
-
         private ArrayObject _vertexArrayObject;
-
         private Shader _shader;
-
-        private Texture _texture;
+        private TexturaImage _texture;
 
         // ===============================================================================================================
 
         ConstrutorTexto sampleText;
         ConstrutorTexto MousePositionText;
+
 
         // Evento é garregado quando o OpenTK inicia o aplicativo
         protected override void OnLoad()
@@ -77,9 +72,6 @@ namespace Remy.Engine
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             LogFile = new LogFile();
-            Render = new Render();
-            Fontes = new GerenciarFontes();
-            InputControl = new InputControl(this);
 
             if (GCena.Cenas.Count <= 0)
             {
@@ -89,6 +81,14 @@ namespace Remy.Engine
             }
 
             LogFile.WriteLine(Environment.CurrentDirectory);
+
+            void tre(object? sender, EventArgs e)
+            {
+                LogFile.WriteLine("[ProcessExit] Remy foi forçado a fechar.");
+                LogFile.Close();
+            }
+
+            AppDomain.CurrentDomain.ProcessExit += tre;
 
             foreach (
                 Type component in Assembly.GetEntryAssembly()!.GetTypes().Where(t =>
@@ -103,6 +103,9 @@ namespace Remy.Engine
             Janela = new(Size.X, Size.Y - (Bounds.Size.Y - ClientRectangle.Size.Y));
             Titulo = Title;
 
+            Render = new Render();
+            Fontes = new GerenciarFontes();
+            InputControl = new InputControl(this);
 
             Retangulo1 = new Retangulo(300, 250, 10, 0, "Retangulo1");
 
@@ -145,7 +148,7 @@ namespace Remy.Engine
             InputControl.Update();
 
             sampleText = new ConstrutorTexto("This is sample text", 0.0f, 0.0f, 1.0f, Color4.Crimson);
-            MousePositionText = new ConstrutorTexto($"P: {ClientSize} || U: {Bounds.Size} || U: {ClientRectangle.Size}", 20.0f, 700.0f, 1.0f, Color4.Crimson);
+            MousePositionText = new ConstrutorTexto($"P: {Mouse.Posição}", 20.0f, 700.0f, 1.0f, Color4.Crimson);
 
             BaseComportamento.Update();
         }
@@ -170,7 +173,7 @@ namespace Remy.Engine
 
             // ===============================================================================================================
 
-            Render.Update(); // Atualizar o cache do render
+            Render.Update(); // Renderizar o frame armazenado no cache do render
 
             SwapBuffers(); // Aqui o quadro será pintado na tela
 
@@ -197,7 +200,6 @@ namespace Remy.Engine
             base.OnUnload();
 
             LogFile.WriteLine("Remy está desligando");
-            LogFile.Close();
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
