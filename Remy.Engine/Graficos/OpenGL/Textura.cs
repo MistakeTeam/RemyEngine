@@ -9,6 +9,8 @@ namespace Remy.Engine.Graficos.OpenGL
         public PixelInternalFormat internalformat;
         public PixelFormat format;
         public PixelType type;
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public Textura(PixelInternalFormat internalformat, PixelFormat format, PixelType type)
         {

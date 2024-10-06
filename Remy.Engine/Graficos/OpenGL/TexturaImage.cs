@@ -6,8 +6,6 @@ namespace Remy.Engine.Graficos.OpenGL
     public class TexturaImage : Textura
     {
         public override TextureTarget TextureTarget { get { return TextureTarget.Texture2D; } }
-        public int Width { get; set; }
-        public int Height { get; set; }
 
         public TexturaImage(string path) : base(PixelInternalFormat.Rgba8, PixelFormat.Rgba, PixelType.UnsignedByte)
         {

@@ -5,8 +5,6 @@ namespace Remy.Engine.Graficos.OpenGL
     public class Textura2D : Textura
     {
         public override TextureTarget TextureTarget { get { return TextureTarget.Texture2D; } }
-        public int Width { get; set; }
-        public int Height { get; set; }
         public int GetByteSize() => Width * Height * 4;
 
         public Textura2D(int width, int height, nint pixels) : base(PixelInternalFormat.R8, PixelFormat.Red, PixelType.UnsignedByte)
