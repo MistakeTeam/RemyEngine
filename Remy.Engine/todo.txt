@@ -12,20 +12,25 @@ Logs OK
 
 
 
+==================================================================
+Cadeia de eventos geral para a execução de um jogo
+
 
 EXE >> Cena >> Objetos >> Comportamento >> Componente >> Objeto??
 
 
 
-
-Refatorar a Fonte
-
-Sprite >> Fonte >> Texto
+==================================================================
 
 
+Texto
+   Lista => Caracteres
+   
 
 
 
+
+==================================================================
 Cadeia de renderização
 
 Vertices >> Cache
@@ -36,10 +41,8 @@ onRender >> Cache >> Tipo >> Update() >> Limpar
 
 
 
-16 - 12 = 4
-22 - 16 = 6
-32 - 23 = 9
-38 - 27 = 11
-44 - 31 = 13
-48 - 34 = 14
-50 - 36 = 14
+
+
+
+==================================================================
+
