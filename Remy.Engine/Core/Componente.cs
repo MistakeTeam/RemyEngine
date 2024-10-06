@@ -4,7 +4,7 @@ namespace Remy.Engine.Core
 {
     public partial class Componente
     {
-
+        public Objeto Pai;
     }
 
     internal class BaseComponente<T> where T : Componente

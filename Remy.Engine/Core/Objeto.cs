@@ -15,14 +15,14 @@ namespace Remy.Engine.Core
             Componentes.Add(_Componenete);
         }
 
-        public T? GetComponent<T>() where T : Componente
+        public T GetComponent<T>() where T : Componente
         {
             foreach (var componente in Componentes)
             {
                 if (typeof(T) == componente.GetType()) return (componente as T)!;
             }
 
-            return null;
+            throw new NullReferenceException("Não foi possivel encontrar componente.");
         }
 
         public Componente GetComponent(Type T)
@@ -32,7 +32,7 @@ namespace Remy.Engine.Core
                 if (T == componente.GetType()) return componente;
             }
 
-            return null;
+            throw new NullReferenceException("Não foi possivel encontrar componente.");
         }
     }
 }
