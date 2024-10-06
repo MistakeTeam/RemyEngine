@@ -51,8 +51,10 @@ namespace Remy.Engine.Logs
                 sf = st.GetFrame(2)!;
             }
 
-            FileLog.Write("\r\n[{0}] ", DateTime.Now.ToLongTimeString());
-            FileLog.Write("[{0}.{1}:{2}] {3}", sf.GetMethod()!.DeclaringType!.Namespace, sf.GetMethod()!.DeclaringType!.Name, sf.GetMethod()!.Name, mensagem);
+            string linha = $"[{DateTime.Now.ToLongTimeString()}] [{sf.GetMethod()!.DeclaringType!.Namespace}.{sf.GetMethod()!.DeclaringType!.Name}:{sf.GetMethod()!.Name}] {mensagem}\r\n";
+
+            FileLog.Write(linha);
+            Console.Write(linha);
         }
 
         public void Close() => FileLog.Close();
