@@ -1,4 +1,5 @@
-using OpenTK.Windowing.Desktop;
+using Remy.Engine.Cache;
+using Remy.Engine.Enum;
 using Remy.Engine.Graficos.Texto;
 
 namespace Remy.Engine.Graficos
@@ -43,8 +44,6 @@ namespace Remy.Engine.Graficos
         {
             if (RenderCache.Count > 0)
             {
-                TextoRender treer = new();
-
                 foreach (var cache in RenderCache)
                 {
                     if (cache.FameIndex != ContadorQuadros)
@@ -52,17 +51,15 @@ namespace Remy.Engine.Graficos
 
                     switch (cache.Tipo)
                     {
-                        case TipoObjeto.Texto:
-                            treer.SetVertices(cache.Vertices);
+                        case TipoCache.Texto:
+                            new TextoRender(((TextoCache)cache).Vertices);
                             break;
-                        case TipoObjeto.Textura:
-                        case TipoObjeto.Quadrado:
+                        case TipoCache.Textura:
+                        case TipoCache.Quadrado:
                         default:
                             break;
                     }
                 }
-
-                treer.Dispose();
             }
         }
     }
