@@ -1,7 +1,7 @@
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 using Remy.Engine.Graficos.OpenGL;
 using Remy.Engine.Input;
-using Remy.Engine.Logs;
 using Remy.Engine.Utility;
 
 namespace Remy.Engine.Graficos.Interface
@@ -21,29 +21,34 @@ namespace Remy.Engine.Graficos.Interface
 
         public Retangulo(float largura, float altura, float x, float y, string tex)
         {
-            if (y + altura > Game.Janela.Y)
+            Color4 Cor = Color4.DarkSalmon;
+
+            if ((y + altura) > Game.Janela.Y)
                 y -= y + altura - Game.Janela.Y;
 
-            if (y < altura)
-                y -= y - altura;
+            if (y < 0)
+                y = 0;
 
             if (x + largura > Game.Janela.X)
                 x -= x + largura - Game.Janela.X;
+
+            if (x < 0)
+                x = 0;
 
             float nX = Converter.Intervalo(x, 0, Game.Janela.X, -1, 1);
             float LnX = Converter.Intervalo(x + largura, 0, Game.Janela.X, -1, 1);
             float nY = Converter.Intervalo(y, 0, Game.Janela.Y, -1, 1);
             float LnY = Converter.Intervalo(y + altura, 0, Game.Janela.Y, -1, 1);
 
-            Console.WriteLine($"{nX}/{LnX}/{nY}/{LnY}");
+            Console.WriteLine($"{x}/{x + largura}/{y}/{y + altura}");
 
             float[] vertices =
             {
             //  X       Y       R       G       B
-                LnX,    nY,     1.0f,   0.0f,   0.0f,  // top right
-                LnX,    LnY,    0.0f,   1.0f,   0.0f,  // bottom right
-                nX,     LnY,    0.5f,   0.0f,   0.5f,  // bottom left
-                nX,     nY,     0.0f,   0.5f,   1.0f,  // top left
+                LnX,    -nY,    Cor.R,  Cor.G,  Cor.B,  // top right
+                LnX,    -LnY,   Cor.R,  Cor.G,  Cor.B,  // bottom right
+                nX,     -LnY,   Cor.R,  Cor.G,  Cor.B,  // bottom left
+                nX,     -nY,    Cor.R,  Cor.G,  Cor.B,  // top left
             };
 
             VAO = new(5 * sizeof(float));
@@ -54,21 +59,27 @@ namespace Remy.Engine.Graficos.Interface
             EBO = new(indices.Length, BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw);
             EBO.SetData(indices);
 
-            shader = new Shader("Recursos/Shaders/UIBase.vert", "Recursos/Shaders/UIBase.frag");
-            shader.Use();
-
             VAO.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 0);
             VAO.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 2 * sizeof(float));
 
-            void MouseE()
-            {
-                if (Mouse.Posição.X > nX && Mouse.Posição.Y > nY)
-                {
-                    // Console.WriteLine("TESTE011001");
-                }
-            }
+            // Matrix4 projectionM = Matrix4.CreateScale(new Vector3(1f / Game.Janela.X, 1f / Game.Janela.Y, 1.0f));
+            // projectionM = Matrix4.CreateOrthographicOffCenter(0.0f, Game.Janela.X, Game.Janela.Y, 0.0f, -1.0f, 1.0f);
 
-            Mouse.MouseEvent += MouseE;
+            // VAO.SetUniformMatrix4(2, projectionM);
+
+            shader = new Shader("Recursos/Shaders/UIBase.vert", "Recursos/Shaders/UIBase.frag");
+            shader.Use();
+
+            Mouse.MouseEvent += delegate
+            {
+                if (Mouse.Posição.X > x && Mouse.Posição.Y > y)
+                {
+                    if (Mouse.Posição.X < (x + largura) && Mouse.Posição.Y < (y + altura))
+                    {
+                        Console.WriteLine("TESTE011001");
+                    }
+                }
+            };
         }
 
         public void desenhar()
