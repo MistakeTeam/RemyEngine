@@ -70,6 +70,8 @@ namespace Remy.Engine.Graficos.Interface
             shader = new Shader("Recursos/Shaders/UIBase.vert", "Recursos/Shaders/UIBase.frag");
             shader.Use();
 
+            /// Evento do mouse
+            /// Mapeia a posição e traça uma área de interação
             Mouse.MouseEvent += delegate
             {
                 if (Mouse.Posição.X > x && Mouse.Posição.Y > y)

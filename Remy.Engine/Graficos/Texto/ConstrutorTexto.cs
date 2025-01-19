@@ -67,5 +67,10 @@ namespace Remy.Engine.Graficos.Texto
 
             Render.AddObjeto(_txtCache);
         }
+
+        public override void Dispose(bool isDis)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

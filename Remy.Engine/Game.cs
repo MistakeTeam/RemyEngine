@@ -12,6 +12,7 @@ using Remy.Engine.Input;
 using Remy.Engine.IO;
 using Remy.Engine.Logs;
 using Remy.Engine.Graficos;
+using System.Text;
 
 namespace Remy.Engine
 {
@@ -61,6 +62,18 @@ namespace Remy.Engine
         ConstrutorTexto MousePositionText;
 
 
+        protected virtual string GetExtensions()
+        {
+            GL.GetInteger((GetPName)All.NumExtensions, out int numExtensions);
+
+            var extensionsBuilder = new StringBuilder();
+
+            for (int i = 0; i < numExtensions; i++)
+                extensionsBuilder.Append($"{GL.GetString(StringNameIndexed.Extensions, i)} ");
+
+            return extensionsBuilder.ToString().TrimEnd();
+        }
+
         // Evento é garregado quando o OpenTK inicia o aplicativo
         protected override void OnLoad()
         {
@@ -89,6 +102,15 @@ namespace Remy.Engine
             }
 
             AppDomain.CurrentDomain.ProcessExit += tre;
+
+            string extensions = GetExtensions();
+
+            LogFile.WriteLine($@"GL Initialized
+                        GL Version:                 {GL.GetString(StringName.Version)}
+                        GL Renderer:                {GL.GetString(StringName.Renderer)}
+                        GL Shader Language version: {GL.GetString(StringName.ShadingLanguageVersion)}
+                        GL Vendor:                  {GL.GetString(StringName.Vendor)}
+                        GL Extensions:              {extensions.Replace(" ", "\n                                                    ")}");
 
             foreach (
                 Type component in Assembly.GetEntryAssembly()!.GetTypes().Where(t =>
@@ -142,7 +164,7 @@ namespace Remy.Engine
 
             Render.NovoQuadro();
 
-            Title = $"{Titulo}: Resolução: {Janela.X}x{Janela.Y} {API}: {APIVersion}/{Profile} (Vsync: {VSync}) FPS: {1f / e.Time:0}";
+            Title = $"{Titulo} - Resolução: {Janela.X}x{Janela.Y} {API}: {APIVersion}/{Profile} (Vsync: {VSync}) FPS: {1f / e.Time:0}";
 
             Joysticks = JoystickStates;
             InputControl.Update();

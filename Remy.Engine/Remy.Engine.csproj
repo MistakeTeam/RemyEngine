@@ -2,11 +2,11 @@
   <PropertyGroup Label="Project">
     <Title>Remy Engine</Title>
     <OutputType>Library</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <AssemblyTitle>RemyEngine</AssemblyTitle>
     <AssemblyName>Remy.Engine</AssemblyName>
     <Description>Um moto de jogos com o proposito de ser leve.</Description>
-    <Version>0.0.0.00011</Version>
+    <Version>0.0.0.00019</Version>
     <Authors>xDeltaFox</Authors>
     <Company>MistakeTeam</Company>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -23,8 +23,8 @@
     </None>
   </ItemGroup> -->
   <ItemGroup Label="Package References">
-    <PackageReference Include="OpenTK" Version="4.8.2" />
+    <PackageReference Include="OpenTK" Version="4.9.3" />
     <PackageReference Include="SpaceWizards.SharpFont" Version="1.0.2" />
-    <PackageReference Include="StbImageSharp" Version="2.27.14" />
+    <PackageReference Include="StbImageSharp" Version="2.30.15" />
   </ItemGroup>
 </Project>

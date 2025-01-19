@@ -4,8 +4,11 @@ namespace Remy.Engine.Graficos
 {
     public abstract class Desenho : IDisposable
     {
+        public abstract void Dispose(bool isDis);
+
         public void Dispose()
         {
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 

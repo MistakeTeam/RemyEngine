@@ -30,7 +30,7 @@ namespace Remy.Engine.IO
             Face face = new(_library, path);
             face.SetPixelSizes(0, tamanho); // Muda o tamanho da fonte
             Console.WriteLine(face.AvailableSizes);
-            // definir alinhamento de pixel em 1 byte 
+            // definir alinhamento de pixel em 1 byte
             GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
 
             LogFile.WriteLine($"Criando {face.GlyphCount} glyphs");

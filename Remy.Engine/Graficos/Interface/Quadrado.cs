@@ -45,5 +45,10 @@ namespace Remy.Engine.Graficos.Interface
 
             Cache.SetVertices(Vertices);
         }
+
+        public override void Dispose(bool isDis)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

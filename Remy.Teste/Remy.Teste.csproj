@@ -7,12 +7,12 @@
   <PropertyGroup>
     <Title>Remy Texte</Title>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <RuntimeIdentifiers>linux-x64</RuntimeIdentifiers>
     <AssemblyTitle>RemyTeste</AssemblyTitle>
     <AssemblyName>Remy.Teste</AssemblyName>
     <Description>Exemplo de jogo usando a Remy Engine.</Description>
-    <Version>0.0.0.00002</Version>
+    <Version>0.0.0.00003</Version>
     <Authors>xDeltaFox</Authors>
     <Company>MistakeTeam</Company>
     <!-- <DebugSymbols>false</DebugSymbols> -->
