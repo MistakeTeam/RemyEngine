@@ -1,0 +1,132 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		// Plataformas
+		{ // iOS
+			"label": "Build iOS",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${cwd}/Remy.Teste/Remy.Teste.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary",
+				"/p:Configuration=Debug",
+				"--runtime",
+				"ios-arm64",
+			],
+			"presentation": {
+				"reveal": "never"
+			},
+			"problemMatcher": []
+		},
+		{ // Android
+			"label": "Build Android",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${cwd}/Remy.Teste/Remy.Teste.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary",
+				"/p:Configuration=Debug",
+				"--runtime",
+				"android-arm64",
+			],
+			"presentation": {
+				"reveal": "never"
+			},
+			"problemMatcher": []
+		},
+		{ // Windows
+			"label": "Build Windows",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${cwd}/Remy.Teste/Remy.Teste.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary",
+				"/p:Configuration=Debug",
+				"--runtime",
+				"win-x64",
+			],
+			"presentation": {
+				"reveal": "never"
+			},
+			"problemMatcher": []
+		},
+		{ // Linux
+			"label": "Build Linux",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${cwd}/Remy.Teste/Remy.Teste.csproj",
+				"-consoleloggerparameters:NoSummary",
+				"-p:GenerateFullPaths=true",
+				"-p:Configuration=Debug",
+				"--runtime",
+				"linux-x64"
+			],
+			"presentation": {
+				"reveal": "never"
+			},
+			"problemMatcher": []
+		},
+		{ // MacOS
+			"label": "Build MacOS",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${cwd}/Remy.Teste/Remy.Teste.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary",
+				"/p:Configuration=Debug",
+				"--runtime",
+				"osx-x64",
+			],
+			"presentation": {
+				"reveal": "never"
+			},
+			"problemMatcher": []
+        },
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MistakeTeam.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/MistakeTeam.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/MistakeTeam.sln"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+	]
+}

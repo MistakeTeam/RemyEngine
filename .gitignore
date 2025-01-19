@@ -3,11 +3,7 @@ Release
 bin
 obj
 
-# Visual Studio Code
-/.vscode
-
 # Dotnet
 .config
 
 # Projetos que não estão prontos para ir ao repositorio
-./Remy
