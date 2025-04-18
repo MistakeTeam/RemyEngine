@@ -4,7 +4,7 @@ layout(location=0)in vec4 in_pos;
 
 out vec2 vUV;
 
-layout(location=1)uniform mat4 projection;
+uniform mat4 projection;
 
 void main()
 {

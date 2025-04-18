@@ -10,6 +10,9 @@ out vec4 cor;
 
 void main()
 {
-  vec4 text=vec4(1.,1.,1.,texture(textura,vUV).r);
-  cor=vec4(textColor,1.)*text;
+  // vec4 text=vec4(1.,1.,1.,texture(textura,vUV).r);
+  // cor=vec4(textColor,1.)*text;
+
+  float text=texture(textura,vUV.xy).r;
+  cor=vec4(textColor.rgb*text, text);
 }

@@ -1,18 +1,38 @@
-using Remy.Engine.Core;
+using Remy.Engine;
+using Remy.Engine.Graficos.Interface.Formas;
+using Remy.Engine.Graficos.Texto;
+using Remy.Engine.Input;
 using Remy.Engine.Logs;
 
 namespace Remy.Teste
 {
-    public class Test : Comportamento
+    public class Test : Game
     {
-        public override void Start()
+        private Quadrado Quad;
+        private ConstrutorTexto Texto_Teste;
+
+        protected override void Load()
         {
-            LogFile.WriteLine("Inicio");
+            base.Load();
+
+            Logger.WriteLine("Iniciando jogo");
+            Add(Quad = new Quadrado
+            {
+                Posição = new(200, 0),
+                Tamanho = new(100, 100)
+            });
+
+            Add(Texto_Teste = new ConstrutorTexto
+            {
+                Posição = new(20, 100)
+            });
         }
 
-        public override void Update()
+        protected override void Update()
         {
-            //LogFile.WriteLine("Atualizando");
+            base.Update();
+
+            Texto_Teste.Texto = $"P: {Mouse.Posição}";
         }
     }
 }
