@@ -1,9 +1,7 @@
-using System.Numerics;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 
-using OpenTK.Graphics.OpenGL4;
-using Remy.Engine.Logs;
-
-namespace Remy.Engine.Graficos.OpenGL
+namespace Remy.Engine.Graficos.OpenGL.Shaders
 {
     public class Shader : IDisposable
     {
@@ -99,7 +97,7 @@ namespace Remy.Engine.Graficos.OpenGL
             GL.Uniform1(location, value);
         }
 
-        public unsafe void SetUniform(string name, Matrix4x4 value)
+        public unsafe void SetUniform(string name, Matrix4 value)
         {
             int location = GL.GetUniformLocation(Handle, name);
             if (location == -1)
@@ -107,7 +105,7 @@ namespace Remy.Engine.Graficos.OpenGL
                 throw new Exception($"{name} uniform não foi encontrado no shader.");
             }
 
-            GL.UniformMatrix4(location, 1, false, (float*)&value);
+            GL.UniformMatrix4(location, false, ref value);
         }
 
         /// DISPOSED

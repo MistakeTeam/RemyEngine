@@ -1,7 +1,7 @@
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;
 
-namespace Remy.Engine.Graficos.OpenGL
+namespace Remy.Engine.Graficos.OpenGL.Buffers
 {
     public class BufferObject<T> : IDisposable where T : unmanaged
     {

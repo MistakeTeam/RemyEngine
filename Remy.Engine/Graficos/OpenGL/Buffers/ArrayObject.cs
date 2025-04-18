@@ -1,7 +1,7 @@
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
-namespace Remy.Engine.Graficos.OpenGL
+namespace Remy.Engine.Graficos.OpenGL.Buffers
 {
     public class ArrayObject : IDisposable
     {

@@ -1,7 +1,7 @@
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using StbImageSharp;
 
-namespace Remy.Engine.Graficos.OpenGL
+namespace Remy.Engine.Graficos.OpenGL.Texturas
 {
     public class TexturaImage : Textura
     {

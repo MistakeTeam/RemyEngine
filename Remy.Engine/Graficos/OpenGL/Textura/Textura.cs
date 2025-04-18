@@ -1,8 +1,8 @@
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
-namespace Remy.Engine.Graficos.OpenGL
+namespace Remy.Engine.Graficos.OpenGL.Texturas
 {
-    public abstract unsafe class Textura : IDisposable
+    public abstract class Textura : IDisposable
     {
         public readonly int Handle;
         public abstract TextureTarget TextureTarget { get; }
