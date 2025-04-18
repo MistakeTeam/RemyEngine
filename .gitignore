@@ -6,4 +6,13 @@ obj
 # Dotnet
 .config
 
+# Rider
+.idea
+
+#VSCode
+.vscode
+
+.*
+*.user
+
 # Projetos que não estão prontos para ir ao repositorio
