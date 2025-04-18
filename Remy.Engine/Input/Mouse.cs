@@ -31,9 +31,9 @@ namespace Remy.Engine.Input
 
         public void Update()
         {
-            if (_mouseState.Position.X >= Game.Janela.X || _mouseState.Position.X <= 0)
+            if (_mouseState.Position.X >= Plataforma.Window.Tamanho_Janela.X || _mouseState.Position.X <= 0)
                 return;
-            if (_mouseState.Position.Y >= Game.Janela.Y || _mouseState.Position.Y <= 0)
+            if (_mouseState.Position.Y >= Plataforma.Window.Tamanho_Janela.Y || _mouseState.Position.Y <= 0)
                 return;
 
             Posição = _mouseState.Position;

@@ -15,12 +15,12 @@ namespace Remy.Engine.Core
         {
             if (!Components.Contains(component))
             {
-                LogFile.WriteLine("Regstrando componente " + component.GetType().Name);
+                Logger.WriteLine("Regstrando componente " + component.GetType().Name);
                 Components.Add(component);
             }
             else
             {
-                LogFile.WriteLine("Componente já foi adicionado.");
+                Logger.WriteLine("Componente já foi adicionado.");
             }
         }
     }

@@ -8,7 +8,7 @@ namespace Remy.Engine.Core
 
         internal static void AddCena(Cena _Cena)
         {
-            LogFile.WriteLine($"Adicionando Cena {_Cena.ID}: {_Cena.Nome}");
+            Logger.WriteLine($"Adicionando Cena {_Cena.ID}: {_Cena.Nome}");
             Cenas.Add(_Cena);
         }
     }

@@ -1,6 +1,6 @@
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
-using Remy.Engine.Graficos.OpenGL;
+using Remy.Engine.Graficos.OpenGL.Texturas;
 using Remy.Engine.Graficos.Texto;
 using Remy.Engine.Logs;
 using SharpFont;
@@ -25,15 +25,14 @@ namespace Remy.Engine.IO
 
         public void CarregarFonte(string path, uint tamanho = 20)
         {
-            LogFile.WriteLine($"Carregando fonte: {path}");
+            Logger.WriteLine($"Carregando fonte: {path}");
             Dictionary<uint, CaractereGlyph> caracteres = [];
             Face face = new(_library, path);
             face.SetPixelSizes(0, tamanho); // Muda o tamanho da fonte
-            Console.WriteLine(face.AvailableSizes);
             // definir alinhamento de pixel em 1 byte
             GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
 
-            LogFile.WriteLine($"Criando {face.GlyphCount} glyphs");
+            Logger.WriteLine($"Criando {face.GlyphCount} glyphs");
             for (uint c = 0; c < face.GlyphCount; c++)
             {
                 try
@@ -66,7 +65,7 @@ namespace Remy.Engine.IO
             GL.BindTexture(TextureTarget.Texture2D, 0);    // vincular textura padrão
             GL.PixelStore(PixelStoreParameter.UnpackAlignment, 4);  // definir o alinhamento de pixels padrão (4 bytes) 
 
-            LogFile.WriteLine($"Salvando {face.FamilyName}");
+            Logger.WriteLine($"Salvando {face.FamilyName}");
             Fontes.Add(face.FamilyName, new(face.FamilyName, caracteres));
         }
 

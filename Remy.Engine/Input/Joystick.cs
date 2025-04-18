@@ -30,13 +30,12 @@ namespace Remy.Engine.Input
 
         public void JoystickConnectedEvent(JoystickEventArgs joystick)
         {
-
             JoystickIsConnected = joystick.IsConnected;
             Joysticks = Game.Joysticks;
 
             if (joystick.IsConnected)
             {
-                LogFile.WriteLine("joystick foi conectado!");
+                Logger.WriteLine("joystick foi conectado!");
                 foreach (JoystickState joy in Joysticks)
                 {
                     if (joy != null) Console.WriteLine(joy);
@@ -44,7 +43,7 @@ namespace Remy.Engine.Input
             }
             else
             {
-                LogFile.WriteLine("joystick foi desconectado!");
+                Logger.WriteLine("joystick foi desconectado!");
             }
 
             JoystickConnected?.Invoke(joystick);
