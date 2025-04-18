@@ -22,27 +22,12 @@ EXE >> Cena >> Objetos >> Comportamento >> Componente >> Objeto??
 
 ==================================================================
 
+Sistema de renderização
 
-Texto
-   Lista => Caracteres
-   
+Containers
 
-
-
-
-==================================================================
-Cadeia de renderização
-
-Vertices >> Cache
-
-(LOOP)
-onRender >> Cache >> Tipo >> Update() >> Limpar
-
-
-
-
-
-
-
-==================================================================
+"SafeArea" - Container
+   Game - Container
+      Quadrado - Desenhavel (Container)
+      Texto - Desenhavel (Container)
 
