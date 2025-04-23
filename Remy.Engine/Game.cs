@@ -26,7 +26,7 @@ namespace Remy.Engine
         {
             Fontes = new GerenciarFontes();
 
-            InputControl = new InputControl(Host.Window);
+            InputControl = new InputControl(Host);
         }
 
         public void SetHost(GameHost host)

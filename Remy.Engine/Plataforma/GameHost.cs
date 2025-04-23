@@ -1,4 +1,7 @@
+using System.Reflection;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
+using Remy.Engine.Core;
 using Remy.Engine.Graficos;
 using Remy.Engine.Graficos.Interface.Containers;
 using Remy.Engine.Graficos.OpenGL;
@@ -6,17 +9,10 @@ using Remy.Engine.Logs;
 
 namespace Remy.Engine.Plataforma
 {
-    public abstract class GameHost : IDisposable
+    public abstract class GameHost : Window, IDisposable
     {
-        public Window Window { get; private set; }
         public IRenderer Renderer { get; private set; }
 
-        #region Propriedades de eventos Action
-        public event Action Load;
-        #endregion
-
-
-        private string Titulo;
         private Logger Logger;
 
         protected GameHost(string gamename)
@@ -45,51 +41,15 @@ namespace Remy.Engine.Plataforma
 
             Renderer = new GLRenderer();
 
-            Window = new Window();
-            Window.Titulo = Titulo;
-
             game.Load();
 
             // BackgroundLoaderAttribute.Invoke();
 
-            Window.Game = Root;
+            Game = Root;
 
             try
             {
-                if (Window != null)
-                {
-                    // Load += game.Start;
-
-                    Window.Load += OnLoad;
-                    Window.UpdateFrame += OnUpdateFrame;
-                    Window.RenderFrame += OnRenderFrame;
-                    Window.Unload += OnUnLoad;
-
-
-                    ////////////////////////////////////////////
-                    // LISTA DE EVENTOS (ainda não utilizados) DISOPONIVEIS NO OPENTK
-                    // Window.Closing
-                    // Window.FocusedChanged
-                    // Window.FramebufferResize
-                    // Window.JoystickConnected
-                    // Window.KeyDown
-                    // Window.KeyUp
-                    // Window.Maximized
-                    // Window.Minimized
-                    // Window.MouseDown
-                    // Window.MouseEnter
-                    // Window.MouseLeave
-                    // Window.MouseMove
-                    // Window.MouseUp
-                    // Window.MouseWheel
-                    // Window.Move
-                    // Window.Refresh
-                    // Window.Resize
-                    // Window.TextInput
-                    ///////////////////////////////////////////
-
-                    Window.Run();
-                }
+                InitWindow();
             }
             catch (Exception e)
             {
@@ -99,33 +59,80 @@ namespace Remy.Engine.Plataforma
 
 
         #region Inplementações dos eventos
-        private void OnLoad()
+        protected override void OnLoad()
         {
-            Load?.Invoke();
+            base.OnLoad();
+
+            // BackgroundLoaderAttribute.Invoke();
 
             Renderer.Initialise("gl");
 
-            Logger.WriteLine("Load base completa");
+            int i = 0;
+            foreach (
+                Type component in Assembly.GetEntryAssembly()!.GetTypes().Where(t =>
+                {
+                    return t != null && t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(Comportamento));
+                })
+            )
+            {
+                i++;
+                Comportamento cc = (Comportamento)Activator.CreateInstance(component)!;
+            }
+
+            Tamanho_Janela = new(Size.X, Size.Y - (Bounds.Size.Y - ClientRectangle.Size.Y));
+
+            BaseComportamento.Start();
+            Logger.WriteLine($"{i} Classes de Comportamento foram carregadas!");
+            Logger.WriteLine("OnLoad completo ✅");
         }
 
-        private void OnUpdateFrame(FrameEventArgs e)
+        protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            base.OnUpdateFrame(e);
+
+            GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            if (Debug)
+                Title = $"{Titulo} - Resolução: {Tamanho_Janela.X}x{Tamanho_Janela.Y} {API}: {APIVersion}/{Profile} (Vsync: {VSync}) {UpdateFrequency} FPS: {1f / e.Time:0}";
+            else
+                Title = $"{Titulo}";
+
             Root.UpdateSubTree();
         }
-        private void OnRenderFrame(FrameEventArgs e)
+        protected override void OnRenderFrame(FrameEventArgs e)
         {
+            base.OnRenderFrame(e);
+
             Root.UpdateDrawSubTree();
 
-            Window.SwapBuffers(); // Aqui o quadro será pintado na tela
+            SwapBuffers(); // Aqui o quadro será pintado na tela
         }
-        private void OnUnLoad() { }
+        protected override void OnResize(ResizeEventArgs e)
+        {
+            base.OnResize(e);
+
+            Tamanho_Janela = new(ClientSize.X, ClientSize.Y);
+
+            GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
+        }
+        protected override void OnUnload()
+        {
+            base.OnUnload(); // Executa as funções delegate atribuidas ao Unload
+
+            Logger.WriteLine("Remy está desligando");
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.BindVertexArray(0);
+            GL.UseProgram(0);
+        }
         #endregion
 
         #region IDisposable Support
 
         private bool isDisposed;
 
-        protected virtual void Dispose(bool disposing)
+        protected new virtual void Dispose(bool disposing)
         {
             if (isDisposed)
                 return;
@@ -136,7 +143,7 @@ namespace Remy.Engine.Plataforma
             Root = null;
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);

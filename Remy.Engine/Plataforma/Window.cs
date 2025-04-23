@@ -1,10 +1,11 @@
+using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using Remy.Engine.Graficos.Interface.Containers;
 
 namespace Remy.Engine.Plataforma
 {
-    public partial class Window
+    public class Window : GameWindow
     {
         #region Configurações
         private VSyncMode Config_vsync = VSyncMode.On;
@@ -12,23 +13,35 @@ namespace Remy.Engine.Plataforma
         public string Titulo = string.Empty;
         #endregion
 
-
-        private int LarguraMinJanela = 800;
-        private int AlturaMinJanela = 600;
-        private int LarguraJanela;
-        private int AlturaJanela;
-
+        internal static Vector2i Tamanho_Janela;
 
         protected internal Container Game = default;
 
-        internal void Create(int largura, int altura)
+        public Window() : base(GameWindowSettings.Default, new()
         {
-            LarguraJanela = largura;
-            AlturaJanela = altura;
-
-            ClientSize = (LarguraJanela, AlturaJanela); // DEFINE O TAMANHO DA JANELA
-            MinimumSize = (LarguraMinJanela, AlturaMinJanela); // DEFINE UM LIMITE MINIMO PARA O TAMANHO DA JANELA
+            API = ContextAPI.OpenGL,
+            // APIVersion = new Version(3, 3), // DEFINE QUAL VERSÃO DO OPENGL SERÁ USADO
+            Vsync = VSyncMode.On,
+        })
+        {
+            TamanhoMinimo(800, 600);
+            // AlterarTamanho(1280, 720);
             VSync = Config_vsync;
+        }
+
+        public void AlterarTamanho(int largura, int altura)
+        {
+            ClientSize = (largura, altura);
+        }
+
+        public void TamanhoMinimo(int largura, int altura)
+        {
+            MinimumSize = (largura, altura);
+        }
+
+        public void InitWindow()
+        {
+            Run();
         }
     }
 }
