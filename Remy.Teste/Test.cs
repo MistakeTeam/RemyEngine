@@ -1,4 +1,7 @@
+using OpenTK.Mathematics;
 using Remy.Engine;
+using Remy.Engine.Core;
+using Remy.Engine.Extensions;
 using Remy.Engine.Graficos.Interface.Formas;
 using Remy.Engine.Graficos.Texto;
 using Remy.Engine.Input;
@@ -10,6 +13,10 @@ namespace Remy.Teste
     {
         private Quadrado Quad;
         private ConstrutorTexto Texto_Teste;
+
+        public Test() : base(new Cena("Main"))
+        {
+        }
 
         protected override void Load()
         {
@@ -24,7 +31,8 @@ namespace Remy.Teste
 
             Add(Texto_Teste = new ConstrutorTexto
             {
-                Posição = new(20, 100)
+                Posição = new(20, 100),
+                Cor = Color4.Crimson,
             });
         }
 

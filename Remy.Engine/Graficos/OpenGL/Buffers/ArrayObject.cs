@@ -26,6 +26,7 @@ namespace Remy.Engine.Graficos.OpenGL.Buffers
         public void Bind()
         {
             GL.BindVertexArray(_handle);
+            GLUtils.GetGLError($"Erro ao tentar compilar");
         }
 
         public void VertexAttribPointer(int location, int size, VertexAttribPointerType type, bool normalized, int offset)
@@ -39,6 +40,7 @@ namespace Remy.Engine.Graficos.OpenGL.Buffers
         public void SetUniformMatrix4(int location, Matrix4 projectionM)
         {
             GL.UniformMatrix4(location, false, ref projectionM);
+            GLUtils.GetGLError($"Erro ao tentar compilar");
         }
 
         public void SetUniform3(int location, float x, float y, float z) => SetUniform3(location, new Vector3(x, y, z));
@@ -46,6 +48,7 @@ namespace Remy.Engine.Graficos.OpenGL.Buffers
         public void SetUniform3(int location, Vector3 vec)
         {
             GL.Uniform3(location, vec);
+            GLUtils.GetGLError($"Erro ao tentar compilar");
         }
 
         public void Dispose()

@@ -31,6 +31,7 @@ namespace Remy.Engine.Graficos.OpenGL.Shaders
         public void Use()
         {
             GL.UseProgram(Handle);
+            GLUtils.GetGLError($"Erro ao tentar compilar shader");
         }
 
         private int LoadShader(ShaderType type, string path)
@@ -46,6 +47,8 @@ namespace Remy.Engine.Graficos.OpenGL.Shaders
             {
                 throw new Exception($"Erro ao tentar compilar shader do tipo: {type}, falhou com o erro: {infoLog}");
             }
+
+            GLUtils.GetGLError($"Erro ao tentar compilar shader do tipo: {type}");
 
             return shader;
         }

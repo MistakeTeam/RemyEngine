@@ -9,7 +9,7 @@ namespace Remy.Engine.Plataforma
     {
         #region Configurações
         private VSyncMode Config_vsync = VSyncMode.On;
-        public bool Debug = false;
+        public bool Debug = true;
         public string Titulo = string.Empty;
         #endregion
 
@@ -20,7 +20,7 @@ namespace Remy.Engine.Plataforma
         public Window() : base(GameWindowSettings.Default, new()
         {
             API = ContextAPI.OpenGL,
-            // APIVersion = new Version(3, 3), // DEFINE QUAL VERSÃO DO OPENGL SERÁ USADO
+            APIVersion = new Version(4, 5), // DEFINE QUAL VERSÃO DO OPENGL SERÁ USADO
             Vsync = VSyncMode.On,
         })
         {

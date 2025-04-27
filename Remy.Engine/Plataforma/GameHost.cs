@@ -43,8 +43,6 @@ namespace Remy.Engine.Plataforma
 
             game.Load();
 
-            // BackgroundLoaderAttribute.Invoke();
-
             Game = Root;
 
             try
@@ -63,8 +61,6 @@ namespace Remy.Engine.Plataforma
         {
             base.OnLoad();
 
-            // BackgroundLoaderAttribute.Invoke();
-
             Renderer.Initialise("gl");
 
             int i = 0;
@@ -79,7 +75,7 @@ namespace Remy.Engine.Plataforma
                 Comportamento cc = (Comportamento)Activator.CreateInstance(component)!;
             }
 
-            Tamanho_Janela = new(Size.X, Size.Y - (Bounds.Size.Y - ClientRectangle.Size.Y));
+            //Tamanho_Janela = new(Size.X, Size.Y - (Bounds.Size.Y - ClientRectangle.Size.Y));
 
             BaseComportamento.Start();
             Logger.WriteLine($"{i} Classes de Comportamento foram carregadas!");
@@ -94,7 +90,7 @@ namespace Remy.Engine.Plataforma
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             if (Debug)
-                Title = $"{Titulo} - Resolução: {Tamanho_Janela.X}x{Tamanho_Janela.Y} {API}: {APIVersion}/{Profile} (Vsync: {VSync}) {UpdateFrequency} FPS: {1f / e.Time:0}";
+                Title = $"{Titulo} - Resolução: {Tamanho_Janela.X}x{Tamanho_Janela.Y} {API}: {APIVersion}/{Profile} (Vsync: {VSync}) FPS: {1f / e.Time:0}";
             else
                 Title = $"{Titulo}";
 

@@ -4,6 +4,7 @@ using Remy.Engine.Input;
 using Remy.Engine.IO;
 using Remy.Engine.Graficos.Interface.Containers;
 using Remy.Engine.Plataforma;
+using Remy.Engine.Core;
 
 namespace Remy.Engine
 {
@@ -18,8 +19,13 @@ namespace Remy.Engine
 
         protected GameHost Host { get; private set; }
 
+        protected Cena Cena0;
 
-        public Game() : base("Game") { }
+
+        public Game(Cena _cena) : base("Game")
+        {
+            Cena0 = _cena;
+        }
 
 
         protected internal virtual void Load()

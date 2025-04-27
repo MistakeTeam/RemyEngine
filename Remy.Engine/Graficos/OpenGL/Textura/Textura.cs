@@ -16,6 +16,8 @@ namespace Remy.Engine.Graficos.OpenGL.Texturas
         {
             Handle = GL.GenTexture();
 
+            GLUtils.GetGLError($"Erro ao tentar compilar");
+
             this.internalformat = internalformat;
             this.format = format;
             this.type = type;
@@ -24,6 +26,7 @@ namespace Remy.Engine.Graficos.OpenGL.Texturas
         public void SetParameter(TextureParameterName parameterName, int value)
         {
             GL.TexParameter(TextureTarget, parameterName, value);
+            GLUtils.GetGLError($"Erro ao tentar compilar");
         }
 
         public void SetWrapMode(TextureWrapMode wrapMode)
@@ -32,17 +35,20 @@ namespace Remy.Engine.Graficos.OpenGL.Texturas
             SetParameter(TextureParameterName.TextureWrapR, mode);
             SetParameter(TextureParameterName.TextureWrapS, mode);
             SetParameter(TextureParameterName.TextureWrapT, mode);
+            GLUtils.GetGLError($"Erro ao tentar compilar");
         }
 
         public void SetFilter(TextureMinFilter minFilter, TextureMagFilter magFilter)
         {
             SetParameter(TextureParameterName.TextureMinFilter, (int)minFilter);
             SetParameter(TextureParameterName.TextureMagFilter, (int)magFilter);
+            GLUtils.GetGLError($"Erro ao tentar compilar");
         }
 
         public void Bind()
         {
             GL.BindTexture(TextureTarget, Handle);
+            GLUtils.GetGLError($"Erro ao tentar compilar");
         }
 
         public void Bind(TextureUnit unit)

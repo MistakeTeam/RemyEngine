@@ -9,9 +9,9 @@ namespace Remy.Engine.Input
 
         public bool PosiçãoValida { get; set; } = true;
 
-        public static Vector2 Posição { get; private set; }
+        public static Vector2i Posição { get; private set; }
         public static Vector2 Delta { get; private set; }
-        public static Vector2 UltimaPosição { get; private set; }
+        public static Vector2i UltimaPosição { get; private set; }
 
         public static Vector2 Scroll { get; private set; }
         public static Vector2 ScrollDelta { get; private set; }
@@ -36,9 +36,9 @@ namespace Remy.Engine.Input
             if (_mouseState.Position.Y >= Plataforma.Window.Tamanho_Janela.Y || _mouseState.Position.Y <= 0)
                 return;
 
-            Posição = _mouseState.Position;
+            Posição = (Vector2i)_mouseState.Position;
             Delta = _mouseState.Delta;
-            UltimaPosição = _mouseState.PreviousPosition;
+            UltimaPosição = (Vector2i)_mouseState.PreviousPosition;
 
             Scroll = _mouseState.Scroll;
             ScrollDelta = _mouseState.ScrollDelta;

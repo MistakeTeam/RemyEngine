@@ -5,8 +5,6 @@ namespace Remy.Engine.Extensions
     [AttributeUsage(AttributeTargets.Method)]
     public class BackgroundLoaderAttribute : Attribute
     {
-        private const BindingFlags activator_flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-
         public BackgroundLoaderAttribute() { }
 
         internal static void Invoke()
@@ -14,7 +12,7 @@ namespace Remy.Engine.Extensions
             var methods = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(x => x.GetTypes())
                     .Where(x => x.IsClass)
-                    .SelectMany(x => x.GetMethods(activator_flags))
+                    .SelectMany(x => x.GetMethods(BindingFlags.NonPublic))
                     .Where(x => x.GetCustomAttributes(typeof(BackgroundLoaderAttribute), false).FirstOrDefault() != null);
 
             foreach (var method in methods)

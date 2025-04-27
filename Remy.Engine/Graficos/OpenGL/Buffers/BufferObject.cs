@@ -20,11 +20,13 @@ namespace Remy.Engine.Graficos.OpenGL.Buffers
 
             var elementSizeInBytes = Marshal.SizeOf<T>();
             GL.BufferData(bufferType, Size * elementSizeInBytes, IntPtr.Zero, Dynamic);
+            GLUtils.GetGLError($"Erro ao tentar compilar");
         }
 
         public void Bind()
         {
             GL.BindBuffer(_bufferType, Handle);
+            GLUtils.GetGLError($"Erro ao tentar compilar");
         }
 
         public void Dispose()

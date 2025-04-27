@@ -22,6 +22,7 @@ namespace Remy.Engine.Core
         public Cena(string nome)
         {
             Nome = nome;
+            ID = 0;
         }
     }
 }
