@@ -4,36 +4,36 @@ namespace Remy.Engine.Input
 {
     public class JoystickController
     {
-        JoystickState _JoystaickState;
+        private readonly JoystickState JoystaickState;
 
         public JoystickController(JoystickState _joy)
         {
-            _JoystaickState = _joy;
+            JoystaickState = _joy;
         }
 
         public float GetAxis(JoystickAxis axies)
         {
-            return _JoystaickState.GetAxis((int)axies);
+            return JoystaickState.GetAxis((int)axies);
         }
 
         public float GetAxisPrevious(JoystickAxis axies)
         {
-            return _JoystaickState.GetAxisPrevious((int)axies);
+            return JoystaickState.GetAxisPrevious((int)axies);
         }
 
         public bool IsButtonDown(JoystickButtons button)
         {
-            return _JoystaickState.IsButtonDown((int)button);
+            return JoystaickState.IsButtonDown((int)button);
         }
 
         public bool IsButtonPressed(JoystickButtons button)
         {
-            return _JoystaickState.IsButtonPressed((int)button);
+            return JoystaickState.IsButtonPressed((int)button);
         }
 
         public bool IsButtonReleased(JoystickButtons button)
         {
-            return _JoystaickState.IsButtonReleased((int)button);
+            return JoystaickState.IsButtonReleased((int)button);
         }
     }
 }

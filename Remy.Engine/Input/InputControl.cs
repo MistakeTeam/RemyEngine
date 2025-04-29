@@ -5,32 +5,31 @@ namespace Remy.Engine.Input
 {
     public class InputControl
     {
-        private GameWindow _gameWindow;
-        private Keyboard _keyboard;
-        private Mouse _mouse;
-        private Joystick _joystick;
+        public readonly GameWindow GameWindow;
+        public readonly Keyboard Keyboard;
+        public readonly Mouse Mouse;
+        public readonly Joystick Joystick;
 
         public InputControl(GameWindow game)
         {
-            _gameWindow = game;
+            GameWindow = game;
 
-            _keyboard = new Keyboard(_gameWindow.KeyboardState);
-            _mouse = new Mouse(_gameWindow.MouseState);
-            _joystick = new Joystick(_gameWindow.JoystickStates);
-
+            Keyboard = new Keyboard(GameWindow.KeyboardState);
+            Mouse = new Mouse(GameWindow.MouseState);
+            Joystick = new Joystick(GameWindow.JoystickStates);
 
             // Lista de eventos
-            _gameWindow.JoystickConnected += _joystick.JoystickConnectedEvent;
+            GameWindow.JoystickConnected += Joystick.JoystickConnectedEvent;
         }
 
         public void Update()
         {
             if (Keyboard.IsKeyDown(Keys.Escape))
             {
-                _gameWindow.Close();
+                GameWindow.Close();
             }
 
-            _mouse.Update();
+            Mouse.Update();
         }
     }
 }

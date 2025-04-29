@@ -1,31 +1,32 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using SharpFont.PostScript;
 
 namespace Remy.Engine.Input
 {
     public class Keyboard
     {
-        private static KeyboardState _keyboardState;
+        private KeyboardState KeyboardState;
 
-        public Keyboard(KeyboardState _keyboard)
+        public Keyboard(KeyboardState Keyboard)
         {
-            _keyboardState = _keyboard;
+            KeyboardState = Keyboard;
         }
 
-        public static bool IsKeyDown(Keys key)
+        public bool IsKeyDown(Keys key)
         {
-            return _keyboardState.IsKeyDown(key);
+            return KeyboardState.IsKeyDown(key);
         }
 
-        public static bool IsKeyPressed(Keys key)
+        public bool IsKeyPressed(Keys key)
         {
-            return _keyboardState.IsKeyPressed(key);
+            return KeyboardState.IsKeyPressed(key);
         }
 
-        public static bool IsKeyReleased(Keys key)
+        public bool IsKeyReleased(Keys key)
         {
-            return _keyboardState.IsKeyReleased(key);
+            return KeyboardState.IsKeyReleased(key);
         }
 
-        public static bool IsAnyKeyDown => _keyboardState.IsAnyKeyDown;
+        public bool IsAnyKeyDown => KeyboardState.IsAnyKeyDown;
     }
 }

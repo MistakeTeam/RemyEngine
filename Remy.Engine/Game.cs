@@ -15,7 +15,7 @@ namespace Remy.Engine
         internal static string Titulo;
         internal static IReadOnlyList<JoystickState> Joysticks;
         private GerenciarFontes Fontes;
-        private InputControl InputControl;
+        public InputControl Input;
 
         protected GameHost Host { get; private set; }
 
@@ -32,7 +32,7 @@ namespace Remy.Engine
         {
             Fontes = new GerenciarFontes();
 
-            InputControl = new InputControl(Host);
+            Input = new InputControl(Host);
         }
 
         public void SetHost(GameHost host)
@@ -42,7 +42,7 @@ namespace Remy.Engine
 
         protected override void Update()
         {
-            InputControl.Update();
+            Input.Update();
         }
     }
 }

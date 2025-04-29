@@ -26,6 +26,8 @@ namespace Remy.Engine.Graficos.Texto
         {
             float X = Posição.X;
             float Y = Posição.Y;
+            Largura = 0;
+            Altura = 0;
 
             if ((Y + FonteEmUso.Caracteres['H'].Size.Y) > Window.Tamanho_Janela.Y)
             {
@@ -57,6 +59,9 @@ namespace Remy.Engine.Graficos.Texto
                      xrel + w,     yrel + h,     1.0f, 1.0f,
                      xrel + w,     yrel,         1.0f, 0.0f
                 ]);
+
+                Largura += w;
+                Altura = h;
 
                 // Agora avance os cursores para o próximo glifo (observe que o avanço é um número de 1/64 pixels)
                 X += (ch.XAdvance >> 6) * Escala; // Bitshift por 6 para obter o valor em pixels (2 ^ 6 = 64 (divida a quantidade de 1/64 pixels por 64 para obter a quantidade de pixels))

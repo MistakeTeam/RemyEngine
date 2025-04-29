@@ -6,9 +6,9 @@ namespace Remy.Engine.Input
 {
     public class Joystick
     {
-        private static IReadOnlyList<JoystickState> Joysticks;
-        public static bool JoystickIsConnected;
-        public static event Action<JoystickEventArgs> JoystickConnected;
+        private IReadOnlyList<JoystickState> Joysticks;
+        public bool JoystickIsConnected;
+        public event Action<JoystickEventArgs> JoystickConnected;
 
         public Joystick(IReadOnlyList<JoystickState> _JoystickStates)
         {
@@ -18,12 +18,12 @@ namespace Remy.Engine.Input
                 JoystickIsConnected = true;
                 foreach (JoystickState joy in Joysticks)
                 {
-                    if (joy != null) Console.WriteLine(joy);
+                    if (joy != null) Logger.WriteLine(joy.ToString());
                 }
             }
         }
 
-        public static JoystickController GetJoystick(int index)
+        public JoystickController GetJoystick(int index)
         {
             return new JoystickController(Joysticks[index]);
         }
@@ -38,7 +38,7 @@ namespace Remy.Engine.Input
                 Logger.WriteLine("joystick foi conectado!");
                 foreach (JoystickState joy in Joysticks)
                 {
-                    if (joy != null) Console.WriteLine(joy);
+                    if (joy != null) Logger.WriteLine(joy);
                 }
             }
             else

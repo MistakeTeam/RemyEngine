@@ -5,44 +5,44 @@ namespace Remy.Engine.Input
 {
     public class Mouse
     {
-        private static MouseState _mouseState;
+        private readonly MouseState MouseState;
 
         public bool PosiçãoValida { get; set; } = true;
 
-        public static Vector2i Posição { get; private set; }
-        public static Vector2 Delta { get; private set; }
-        public static Vector2i UltimaPosição { get; private set; }
+        public Vector2i Posição { get; private set; }
+        public Vector2 Delta { get; private set; }
+        public Vector2i UltimaPosição { get; private set; }
 
-        public static Vector2 Scroll { get; private set; }
-        public static Vector2 ScrollDelta { get; private set; }
-        public static Vector2 UltimoScroll { get; private set; }
+        public Vector2 Scroll { get; private set; }
+        public Vector2 ScrollDelta { get; private set; }
+        public Vector2 UltimoScroll { get; private set; }
 
-        public static event Action MouseEvent;
+        public event Action MouseEvent;
 
         public Mouse(MouseState _mouse)
         {
-            _mouseState = _mouse;
+            MouseState = _mouse;
         }
 
-        public static bool IsButtonDown(MouseButton button)
+        public bool IsButtonDown(MouseButton button)
         {
-            return _mouseState.IsButtonDown(button);
+            return MouseState.IsButtonDown(button);
         }
 
         public void Update()
         {
-            if (_mouseState.Position.X >= Plataforma.Window.Tamanho_Janela.X || _mouseState.Position.X <= 0)
+            if (MouseState.Position.X >= Plataforma.Window.Tamanho_Janela.X || MouseState.Position.X <= 0)
                 return;
-            if (_mouseState.Position.Y >= Plataforma.Window.Tamanho_Janela.Y || _mouseState.Position.Y <= 0)
+            if (MouseState.Position.Y >= Plataforma.Window.Tamanho_Janela.Y || MouseState.Position.Y <= 0)
                 return;
 
-            Posição = (Vector2i)_mouseState.Position;
-            Delta = _mouseState.Delta;
-            UltimaPosição = (Vector2i)_mouseState.PreviousPosition;
+            Posição = (Vector2i)MouseState.Position;
+            Delta = MouseState.Delta;
+            UltimaPosição = (Vector2i)MouseState.PreviousPosition;
 
-            Scroll = _mouseState.Scroll;
-            ScrollDelta = _mouseState.ScrollDelta;
-            UltimoScroll = _mouseState.PreviousScroll;
+            Scroll = MouseState.Scroll;
+            ScrollDelta = MouseState.ScrollDelta;
+            UltimoScroll = MouseState.PreviousScroll;
 
             MouseEvent?.Invoke();
         }

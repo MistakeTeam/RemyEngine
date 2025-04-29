@@ -40,7 +40,7 @@ namespace Remy.Teste
         {
             base.Update();
 
-            Texto_Teste.Texto = $"P: {Mouse.Posição}";
+            Texto_Teste.Texto = $"P: {Input.Mouse.Posição} // ({Texto_Teste.Altura}, {Texto_Teste.Largura})";
         }
     }
 }

@@ -22,25 +22,6 @@
 
 ### ⏳ Linha do tempo
 
-<div style="position: absolute;">
-    <p style="
-        font-weight: bold;
-        font-size: 25px;
-        margin: 5px auto;
-        padding: 5px 20px;
-        background:rgb(212, 163, 0);
-        block: block;
-        width: min-content;
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-    ">
-        19/01/2025
-    </p>
-    <img src="https://raw.githubusercontent.com/MistakeTeam/RemyEngine/refs/heads/main/Recursos/media-github/Captura%20de%20tela%20de%202025-01-19%2016-08-28.png"
-         style="
-            margin-top: -2em;
-         ">
-    </img>
-</div>
+- 19/01/2025
+![](https://raw.githubusercontent.com/MistakeTeam/RemyEngine/refs/heads/main/Recursos/media-github/Captura%20de%20tela%20de%202025-01-19%2016-08-28.png)
 
